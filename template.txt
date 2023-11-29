@@ -1,0 +1,18 @@
+"""Solve AOC for day {day_here}"""
+from aoc.aoc_controller import get_day_input, post_day_answer
+
+INP = get_day_input()
+
+
+def solve():
+    "Solve to puzzle"
+
+
+    ans = ""
+    return ans
+
+
+if __name__ == "__main__":
+    ANSWER=solve()
+    #print("Level one solved: " + post_day_answer(ANSWER))
+    #print("Level two solved: " + post_day_answer(ANSWER,level=2))
