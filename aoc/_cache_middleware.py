@@ -11,13 +11,17 @@ def _cache_exists_or_create():
     return True
 
 
+def _path_gen(name):
+    return os.path.join(config("CACHE"), name)
+
+
 def _cache_file_exists(uri):
     if not _cache_exists_or_create():
         return False
     md5 = hashlib.md5(uri.encode()).hexdigest()
     for file in os.listdir(config("CACHE")):
         if os.fsdecode(file) == md5:
-            with open(os.path.join(config("CACHE"), md5), "r", encoding="utf-8") as f:
+            with open(_path_gen(md5), "r", encoding="utf-8") as f:
                 return f.read()
     return False
 
@@ -26,7 +30,7 @@ def _cache_save(uri, data):
     if not _cache_exists_or_create():
         return False
     md5 = hashlib.md5(uri.encode()).hexdigest()
-    with open(os.path.join(config("CACHE"), md5), "w", encoding="utf-8") as f:
+    with open(_path_gen(md5), "w", encoding="utf-8") as f:
         f.write(data)
     return True
 
