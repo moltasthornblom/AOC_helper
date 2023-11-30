@@ -1,5 +1,5 @@
 """Solve AOC for day {day_here}"""
-from aoc.aoc_controller import get_day_input, post_day_answer
+from aoc import get_day_input, post_day_answer
 
 INP = get_day_input()
 
