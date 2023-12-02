@@ -1,7 +1,7 @@
 """Interact with AOC website"""
-from decouple import config
-import requests
 
+import requests
+from .env import config
 
 def _aoc_get_request_with_oath(uri):
     """Perform get request to AOC with Session cookie"""
