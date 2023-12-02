@@ -14,5 +14,5 @@ def solve():
 
 if __name__ == "__main__":
     ANSWER=solve()
-    #print("Level one solved: " + post_day_answer(ANSWER))
-    #print("Level two solved: " + post_day_answer(ANSWER,level=2))
+    #print("Level one solved: " , post_day_answer(ANSWER))
+    #print("Level two solved: " , post_day_answer(ANSWER,level=2))
