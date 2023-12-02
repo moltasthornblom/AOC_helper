@@ -19,9 +19,8 @@ def solve():
                 amount = int(amount)
                 if g_id not in game:
                     game[g_id] = {ball: amount}
-                else:
-                    if game[g_id].get(ball, 0) < amount:
-                        game[g_id][ball] = amount
+                elif game[g_id].get(ball, 0) < amount:
+                    game[g_id][ball] = amount
 
     # part one
     total = 0
