@@ -1,1 +1,2 @@
-/aoc/.env
+/aoc/env.py
+/aoc/__pycache__

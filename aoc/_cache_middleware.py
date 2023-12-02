@@ -1,7 +1,7 @@
 """Middleware for caching responses"""
 import os
 import hashlib
-from decouple import config
+from .env import config
 
 
 def _cache_exists_or_create():
