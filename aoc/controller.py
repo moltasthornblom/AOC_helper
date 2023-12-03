@@ -58,7 +58,6 @@ def post_day_answer(
     """Post day answer to aoc"""
     uri = f"https://adventofcode.com/{year}/day/{day}/answer"
     response = _aoc_post_request_with_oath(uri, f"level={level}&answer={answer}")[1]
-    print(response)
     if WRONG_ANSWER in response or TOO_MANY_ANSWERS in response:
         return False
     return True
