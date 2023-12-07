@@ -78,7 +78,5 @@ def solve(part=1):
 
 if __name__ == "__main__":
     ANSWER = solve()
-    if ANSWER == 246409899:
-        print("correct")
     # print("Level one solved: ", post_day_answer(ANSWER))
     # print("Level two solved: " , post_day_answer(ANSWER,level=2))
