@@ -76,21 +76,6 @@ def solve():
                 print("[reset]{x}[/reset]".format(x=x), end="")
         print("")
     print(furthest+1)
-
-
-
-
-
-    
-
-    
-
-
-    
-
-    
-     
-
     ans = ""
     return ans
 
