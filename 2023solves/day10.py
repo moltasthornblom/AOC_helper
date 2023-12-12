@@ -3,84 +3,82 @@ from aoc import get_day_input, post_day_answer
 from rich import print
 
 INP = get_day_input(day=10)
+INP2 = """..F7.
+.FJ|.
+SJ.L7
+|F--J
+LJ..."""
+
 
 pipes = INP.split("\n")
-axis = [-1,0,1]
-mod = [(1,0), (-1, 0), (0, 1), (0, -1)]
-signs = {
-    "|":[(0, -1), (0, 1)],
-    "-":[(1,0), (-1, 0)],
-    "L":[(-1, 0), (0, 1)],
-    "J": [(0, 1), (1, 0)],
-    "7": [(1, 0), (0, -1)],
-    "F": [(-1, 0), (0, -1)]
+
+outputs = {
+    "S": "udlr",
+    "J": "lu",
+    "F": "rd",
+    "|": "ud",
+    "-": "lr",
+    "L": "ru",
+    "7": "ld",
 }
+inputs = {"S": "udlr", "J": "lu", "F": "rd", "|": "ud", "-": "lr", "L": "ru", "7": "ld"}
 
-def find_viable(row, col):
-    paths = []
-    for aR, aC in mod:
-        if row+aR < 0 or col+aC < 0 or col+aC > len(pipes[0])-1 or row + aR > len(pipes)-1:
-            continue
-        sign = pipes[row+aR][col+aC]
-        rules = signs.get(sign, None)
-        if rules is None:
-            continue
-        for x, y in rules:
-            if (row+y == row+aR) and (col+x == col+aC):
-                paths.append((row+aR, col+aC))
-    return paths
 
-def pathfind(row,col):
-    counts = {}
-    paths=[]
-    step = 0
-    while True:
-        viables = [(x,y) for (x,y) in find_viable(row, col) if f"({x},{y})" not in counts]
+def lookaround(x, y, map, prev):
+    sign = map.get(f"({x},{y})")
+    out = outputs.get(sign, None)
+    ops = []
 
-        counts[f"({row},{col})"] = step
-
-        if len(viables) == 0:
-            break
-        else:
-            row, col = viables[0]
-        step+=1
-
-    return counts
-
+    if "u" in out and "d" in inputs.get(map.get(f"({x},{y-1})", ""), []):
+        ops.append((x, y - 1))
+    if "d" in out and "u" in inputs.get(map.get(f"({x},{y+1})", ""), []):
+        ops.append((x, y + 1))
+    if "l" in out and "r" in inputs.get(map.get(f"({x-1},{y})", ""), []):
+        ops.append((x - 1, y))
+    if "r" in out and "l" in inputs.get(map.get(f"({x+1},{y})", ""), []):
+        ops.append((x + 1, y))
+    ops = [x for x in ops if x not in prev]
+    return ops
 
 
 def solve():
-    "Solve to puzzle"
-    s_ind = INP.replace("\n", "").index("S")
-    col = s_ind % len(pipes[0])
-    row = int((s_ind-col)/len(pipes[0]))
-    counts = []
-    furthest = 0
-    for x, y in find_viable(row, col):
-        counts.append(pathfind(x, y))
-    print(counts)
-    for x in counts:
-        for y, val in x.items(): 
-            other = counts[1].get(y)
-            if other:
-                tmp = min(val, other)
-            else: 
-                tmp = val
-            if(tmp > furthest):
-                furthest = tmp
-    for i, row in enumerate(pipes):
-        for i2, x in enumerate(row):
-            if counts[0].get(f"({i},{i2})"):
-                print("[green]{x}[/green]".format(x=x), end="")
+    step_dic = {}
+    start = ""
+    pipes_map = {}
+    for i, arr in enumerate(pipes):
+        for i2, sign in enumerate(arr):
+            if sign == "S":
+                start = (i2, i)
+            pipes_map[f"({i2},{i})"] = sign
+    for x in [-1, 0]:
+        nxt = start
+        steps = 0
+        prev = []
+
+        while True:
+            if step_dic.get(str(nxt)):
+                step_dic[str(nxt)].append(steps)
             else:
-                print("[reset]{x}[/reset]".format(x=x), end="")
-        print("")
-    print(furthest+1)
-    ans = ""
-    return ans
+                step_dic[str(nxt)] = [
+                    steps,
+                ]
+
+            prev.append(nxt)
+            ops = lookaround(nxt[0], nxt[1], pipes_map, prev)
+            if len(ops) == 0:
+                break
+            nxt = ops[x]
+            steps += 1
+
+    min_v = 0
+    for x in step_dic.values():
+        if min(x) > min_v:
+            min_v = min(x)
+
+    print(min_v)
 
 
 if __name__ == "__main__":
-    ANSWER=solve()
-    #print("Level one solved: " , post_day_answer(ANSWER))
-    #print("Level two solved: " , post_day_answer(ANSWER,level=2))
+    ANSWER = solve()
+    # print("Level one solved: " , post_day_answer(ANSWER))
+    # print("Level two solved: " , post_day_answer(ANSWER,level=2))
